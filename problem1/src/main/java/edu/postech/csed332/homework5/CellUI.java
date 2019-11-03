@@ -9,8 +9,12 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class CellUI extends JTextField implements Observer {
+
+    JTextField input;
 
     /**
      * create a cell UI
@@ -22,8 +26,31 @@ public class CellUI extends JTextField implements Observer {
         initCellUI(cell);
 
         if (cell.getNumber().isEmpty()) {
-            //TODO: whenever the content is changed, cell.setNumber() or cell.unsetNumber() is accordingly invoked.
-            // You may use an action listener, a key listener, a document listener, etc.
+
+            input = new JTextField(1);
+            input.addKeyListener(new KeyListener() {
+
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+                    {  
+                        cell.unsetNumber();
+                    }
+                    else if (KeyEvent.VK_1 <= e.getKeyCode() && e.getKeyCode() <= KeyEvent.VK_9){
+                        cell.setNumber(e.getKeyCode() - KeyEvent.VK_0);
+                    }                                    
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+
+                }
+            });
         }
     }
 
