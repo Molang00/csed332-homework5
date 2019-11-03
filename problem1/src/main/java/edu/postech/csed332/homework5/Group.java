@@ -15,12 +15,14 @@ import java.util.stream.Collectors;
  */
 public class Group implements Observer {
     //TODO: add private member variables for Board
+    HashSet<Cell> cells;
 
     /**
      * Creates an empty group.
      */
     Group() {
         //TODO: implement this
+        cells = new HashSet<Cell>();
     }
 
     /**
@@ -53,7 +55,13 @@ public class Group implements Observer {
     @NotNull
     public Boolean isAvailable(int number) {
         //TODO: implement this
-        return null;
+
+        for(Cell c: cells){
+            // if (c.containsPossibility(number)){
+            //     return true;
+            // }
+        }
+        return false;
     }
 
     /**
@@ -66,5 +74,10 @@ public class Group implements Observer {
     @Override
     public void update(Subject caller, Event arg) {
         //TODO: implement this
+
+        // 얘가 갖고 있는 cell 들의 possibility 다 없애주고,
+        // 빨간색 해줘야 할수도 있고
+        // unsetnumberevent 면 빨간색 없애줘야 할 수도 잇고
+        
     }
 }

@@ -14,6 +14,8 @@ import java.util.Optional;
  */
 public class Cell extends Subject {
     enum Type {EVEN, ODD}
+    Integer number;
+    Type type;
 
     //TODO: add private member variables for Board
 
@@ -23,7 +25,8 @@ public class Cell extends Subject {
      * @param type EVEN or ODD
      */
     public Cell(@NotNull Type type) {
-        //TODO: implement this
+        this.number = null;
+        this.type = type;
     }
 
     /**
@@ -33,8 +36,7 @@ public class Cell extends Subject {
      */
     @NotNull
     public Type getType() {
-        //TODO: implement this
-        return null;
+        return this.type;
     }
 
     /**
@@ -44,8 +46,10 @@ public class Cell extends Subject {
      */
     @NotNull
     public Optional<Integer> getNumber() {
-        //TODO: implement this
-        return Optional.empty();
+        if (this.number == null){
+            return Optional.empty();
+        }
+        return Optional.of(this.number);
     }
 
     /**
@@ -56,6 +60,9 @@ public class Cell extends Subject {
      */
     public void setNumber(int number) {
         //TODO: implement this
+        this.number = number;
+
+       Event e = new SetNumberEvent(number);
     }
 
     /**
