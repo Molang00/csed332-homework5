@@ -86,6 +86,6 @@ public class Board {
      */
     @NotNull
     Group getSquareGroup(int n, int m) {
-        return null;
+        return groups[2][(3*n)+m];
     }
 }

@@ -80,7 +80,14 @@ public class CellUI extends JTextField implements Observer {
      */
     @Override
     public void update(Subject caller, Event arg) {
-        //TODO: implement this
+        // EnabledEvent and DisabledEvent
+        if (arg instanceof EnabledEvent){
+            setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+        else if (arg instanceof DisabledEvent){
+            setBorder(BorderFactory.createLineBorder(Color.RED));
+        }
+
     }
 
     /**

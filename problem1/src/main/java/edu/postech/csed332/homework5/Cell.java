@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  * A cell that has a number and a set of possibilities. Even cells can contain only even numbers, and odd cells can
@@ -16,8 +18,8 @@ public class Cell extends Subject {
     enum Type {EVEN, ODD}
     Integer number;
     Type type;
-
-    //TODO: add private member variables for Board
+    HashSet<Integer> possibility;
+    List<Group> groups;
 
     /**
      * Creates an empty cell with a given type. Initially, no number is assigned.
@@ -27,6 +29,8 @@ public class Cell extends Subject {
     public Cell(@NotNull Type type) {
         this.number = null;
         this.type = type;
+        this.possibility = new HashSet<Integer>();
+        this.groups = new LinkedList<Group>();
     }
 
     /**
@@ -59,17 +63,20 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void setNumber(int number) {
-        //TODO: implement this
         this.number = number;
 
        Event e = new SetNumberEvent(number);
+       notifyObservers(e);
+
     }
 
     /**
      * Removes the number of this cell and notifies an UnsetNumberEvent, provided that the cell has a number.
      */
     public void unsetNumber() {
-        //TODO: implement this
+        Event e = new UnsetNumberEvent(this.number);
+        this.number = null;
+        notifyObservers(e);
     }
 
     /**
@@ -80,7 +87,7 @@ public class Cell extends Subject {
     public void addGroup(@NotNull Group group) {
         addObserver(group);
 
-        //TODO: implement this
+        this.groups.add(group);
     }
 
     /**
@@ -91,8 +98,7 @@ public class Cell extends Subject {
      */
     @NotNull
     public Boolean containsPossibility(int n) {
-        //TODO: implement this
-        return null;
+        return this.possibility.contains(n);
     }
 
     /**
@@ -102,8 +108,7 @@ public class Cell extends Subject {
      */
     @NotNull
     public Boolean emptyPossibility() {
-        //TODO: implement this
-        return null;
+        return this.possibility.isEmpty();
     }
 
     /**
@@ -115,7 +120,23 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void addPossibility(int number) {
-        //TODO: implement this
+        boolean possible = true;
+
+        int temp = number % 2;
+        Type number_type = (temp == 1) ? type.ODD : type.EVEN;
+
+        possible &= (number_type == this.type);
+        for(Group g : groups){
+            possible &= g.isAvailable(number);
+        }
+
+        if (possible){
+            if(this.possibility.isEmpty()){
+                Event e = new EnabledEvent();
+                notifyObservers(e);
+            }
+            this.possibility.add(number);
+        }
     }
 
     /*
@@ -125,6 +146,16 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void removePossibility(int number) {
-        //TODO: implement this
+        boolean possible = this.possibility.contains(number);
+
+        if (possible){
+            this.possibility.remove(number);
+            if(this.possibility.isEmpty()){
+                Event e = new DisabledEvent();
+                notifyObservers(e);
+            }
+
+        }
+        
     }
 }

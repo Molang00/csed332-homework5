@@ -1,6 +1,7 @@
 package edu.postech.csed332.homework5;
 
 import edu.postech.csed332.homework5.events.Event;
+import edu.postech.csed332.homework5.Cell;
 import edu.postech.csed332.homework5.events.SetNumberEvent;
 import edu.postech.csed332.homework5.events.UnsetNumberEvent;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,8 @@ public class Group implements Observer {
      */
     void addCell(Cell cell) {
         //TODO: implement this
+        cell.addGroup(this);
+        cells.add(cell);
     }
 
     /**
@@ -43,7 +46,7 @@ public class Group implements Observer {
     @NotNull
     Boolean contains(@NotNull Cell cell) {
         //TODO: implement this
-        return null;
+        return cells.contains(cell);
     }
 
     /**
@@ -60,8 +63,11 @@ public class Group implements Observer {
             // if (c.containsPossibility(number)){
             //     return true;
             // }
+            if (c.getNumber().get() == number){
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -75,9 +81,18 @@ public class Group implements Observer {
     public void update(Subject caller, Event arg) {
         //TODO: implement this
 
-        // 얘가 갖고 있는 cell 들의 possibility 다 없애주고,
-        // 빨간색 해줘야 할수도 있고
-        // unsetnumberevent 면 빨간색 없애줘야 할 수도 잇고
+        // SetNumberEvent and UnsetNumberEvent
+        if (arg instanceof SetNumberEvent){
+            for (Cell c : cells){
+                c.removePossibility( ((Cell)caller).getNumber().get());
+            }
+
+        }
+        else if (arg instanceof UnsetNumberEvent){
+            for (Cell c : cells){
+                c.addPossibility( ((Cell)caller).getNumber().get());
+            }
+        }
         
     }
 }
