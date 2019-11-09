@@ -37,7 +37,6 @@ public class CellUI extends JTextField implements Observer {
 
                 @Override
                 public void keyReleased(KeyEvent e) {
-                    System.out.println(e.getKeyCode() - KeyEvent.VK_0);
                     if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
                     {
                         cell.unsetNumber();
@@ -46,12 +45,10 @@ public class CellUI extends JTextField implements Observer {
                         if (cell.getNumber().isPresent()){
                             cell.unsetNumber();
                         }
-                        System.out.println("Entered Integer");
                         cell.setNumber(e.getKeyCode() - KeyEvent.VK_0);
                     }
 
                     if (!cell.getNumber().isPresent()){
-                        System.out.println("HERE");
                         setText("");
                     }
                     else {

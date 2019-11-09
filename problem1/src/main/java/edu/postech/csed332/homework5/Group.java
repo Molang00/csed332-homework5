@@ -81,7 +81,6 @@ public class Group implements Observer {
         // SetNumberEvent and UnsetNumberEvent
         if (arg instanceof SetNumberEvent){
             NumberEvent e = (NumberEvent) arg;
-            System.out.println("UPDATE FOR SETNUMBER!!!!");
 
             for (Cell c : cells){
                 c.removePossibility(e.getNumber());
@@ -90,7 +89,6 @@ public class Group implements Observer {
         }
         else if (arg instanceof UnsetNumberEvent){
             NumberEvent e = (NumberEvent) arg;
-            System.out.println("UPDATE FOR UNSETNUMBER");            
 
             for (Cell c : cells){
                 c.addPossibility(e.getNumber());

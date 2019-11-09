@@ -16,7 +16,7 @@ public class GameUI {
     public GameUI(Board board) {
         top = new JFrame("Even/Odd Sudoku");
         top.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        top.setLayout(new GridLayout(3, 3));
+        top.setLayout(new GridLayout(3, 3, 1, 1));
 
         Dimension dim = new Dimension(unitSize * width, unitSize * height);
         top.setMinimumSize(dim);
@@ -64,8 +64,6 @@ public class GameUI {
 
             cellUIs.add(arr);
         }
-
-        top.setLayout(new GridLayout(3,3));
 
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){

@@ -75,12 +75,10 @@ public class Cell extends Subject {
      */
     public void setNumber(int number) {
         if (possibility.contains(number)){
-            System.out.println("POSSIBLE\n");
             this.number = number;
 
             Event e = new SetNumberEvent(number);
             notifyObservers(e);
-            System.out.println(possibility);
         }
     }
 
@@ -89,7 +87,6 @@ public class Cell extends Subject {
      */
     public void unsetNumber() {
         if (this.number != null){
-            System.out.println("UNSET NUMBER");
             Event e = new UnsetNumberEvent(this.number);
             this.number = null;
             notifyObservers(e);
@@ -152,7 +149,6 @@ public class Cell extends Subject {
                 Event e = new EnabledEvent();
                 notifyObservers(e);
             }
-            System.out.println("I ADDED POSSIBILITY");
             this.possibility.add(number);
         }
     }
@@ -167,7 +163,6 @@ public class Cell extends Subject {
         boolean possible = this.possibility.contains(number);
 
         if (possible){
-            System.out.println("I'm going to remove Possibility");
             this.possibility.remove(number);
             if(this.possibility.isEmpty()){
                 Event e = new DisabledEvent();
