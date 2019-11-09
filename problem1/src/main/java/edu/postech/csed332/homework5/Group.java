@@ -1,6 +1,7 @@
 package edu.postech.csed332.homework5;
 
 import edu.postech.csed332.homework5.events.Event;
+import edu.postech.csed332.homework5.events.NumberEvent;
 import edu.postech.csed332.homework5.Cell;
 import edu.postech.csed332.homework5.events.SetNumberEvent;
 import edu.postech.csed332.homework5.events.UnsetNumberEvent;
@@ -60,10 +61,7 @@ public class Group implements Observer {
         //TODO: implement this
 
         for(Cell c: cells){
-            // if (c.containsPossibility(number)){
-            //     return true;
-            // }
-            if (c.getNumber().get() == number){
+            if (c.getNumber().isPresent() && c.getNumber().get() == number){
                 return false;
             }
         }
@@ -80,17 +78,22 @@ public class Group implements Observer {
     @Override
     public void update(Subject caller, Event arg) {
         //TODO: implement this
-
         // SetNumberEvent and UnsetNumberEvent
         if (arg instanceof SetNumberEvent){
+            NumberEvent e = (NumberEvent) arg;
+            System.out.println("UPDATE FOR SETNUMBER!!!!");
+
             for (Cell c : cells){
-                c.removePossibility( ((Cell)caller).getNumber().get());
+                c.removePossibility(e.getNumber());
             }
 
         }
         else if (arg instanceof UnsetNumberEvent){
+            NumberEvent e = (NumberEvent) arg;
+            System.out.println("UPDATE FOR UNSETNUMBER");            
+
             for (Cell c : cells){
-                c.addPossibility( ((Cell)caller).getNumber().get());
+                c.addPossibility(e.getNumber());
             }
         }
         

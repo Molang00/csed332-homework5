@@ -14,8 +14,6 @@ import java.awt.event.KeyListener;
 
 public class CellUI extends JTextField implements Observer {
 
-    JTextField input;
-
     /**
      * create a cell UI
      *
@@ -25,32 +23,45 @@ public class CellUI extends JTextField implements Observer {
         cell.addObserver(this);
         initCellUI(cell);
 
-        if (cell.getNumber().isEmpty()) {
+        if (!cell.getNumber().isPresent()) {
 
-            input = new JTextField(1);
-            input.addKeyListener(new KeyListener() {
+            KeyListener keyListener = new KeyListener(){
 
                 @Override
                 public void keyTyped(KeyEvent e) {
-                    if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
-                    {  
-                        cell.unsetNumber();
-                    }
-                    else if (KeyEvent.VK_1 <= e.getKeyCode() && e.getKeyCode() <= KeyEvent.VK_9){
-                        cell.setNumber(e.getKeyCode() - KeyEvent.VK_0);
-                    }                                    
                 }
 
                 @Override
                 public void keyPressed(KeyEvent e) {
-
                 }
 
                 @Override
                 public void keyReleased(KeyEvent e) {
+                    System.out.println(e.getKeyCode() - KeyEvent.VK_0);
+                    if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+                    {
+                        cell.unsetNumber();
+                    }
+                    else if (KeyEvent.VK_1 <= e.getKeyCode() && e.getKeyCode() <= KeyEvent.VK_9){
+                        if (cell.getNumber().isPresent()){
+                            cell.unsetNumber();
+                        }
+                        System.out.println("Entered Integer");
+                        cell.setNumber(e.getKeyCode() - KeyEvent.VK_0);
+                    }
 
+                    if (!cell.getNumber().isPresent()){
+                        System.out.println("HERE");
+                        setText("");
+                    }
+                    else {
+                        setText(cell.getNumber().get().toString());
+                    }
                 }
-            });
+            };
+
+//            input = new JTextField(4);
+            this.addKeyListener(keyListener);
         }
     }
 

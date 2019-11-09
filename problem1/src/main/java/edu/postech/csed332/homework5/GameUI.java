@@ -40,10 +40,18 @@ public class GameUI {
      * @param board
      */
     private void createCellUI(Board board) {
-        // CellUI[][] cells = new CellUI[9][9];
-        JPanel[][] squares = new JPanel[3][3];
+        ArrayList<ArrayList<JPanel>> squares = new ArrayList<ArrayList<JPanel>>();
 
-        ArrayList<ArrayList<CellUI> > cellUIs = new ArrayList<ArrayList<CellUI>>();
+        for(int i = 0; i < 3; i++){
+            ArrayList<JPanel> arr = new ArrayList<>();
+            for (int j = 0; j < 3; j++){
+                JPanel temp = new JPanel();
+                arr.add(temp);
+            }
+            squares.add(arr);
+        }
+
+        ArrayList<ArrayList<CellUI>> cellUIs = new ArrayList<ArrayList<CellUI>>();
         
         for(int i = 0; i < 9; i++){
             ArrayList<CellUI> arr = new ArrayList<>();
@@ -62,15 +70,15 @@ public class GameUI {
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
 
-                squares[i][j].setLayout(new GridLayout(3,3));
+                squares.get(i).get(j).setLayout(new GridLayout(3,3));
 
                 for(int k = 0; k < 3; k++){
                     for(int l = 0; l < 3; l++){
-                        squares[i][j].add(cellUIs.get((3*i)+k).get((3*j)+l));
+                        squares.get(i).get(j).add(cellUIs.get((3*i)+k).get((3*j)+l));
                     }
                 }
-                
-                top.add(squares[i][j]);
+
+                top.add(squares.get(i).get(j));
             }
         }
 

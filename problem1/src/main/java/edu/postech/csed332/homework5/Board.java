@@ -10,8 +10,8 @@ import edu.postech.csed332.homework5.Cell.Type;
  */
 public class Board {
     //TODO: add private member variables for Board
-    ArrayList<ArrayList<Cell> > cells;
-    Group[][] groups;
+    ArrayList<ArrayList<Cell>> cells;
+    ArrayList<ArrayList<Group>> groups;
 
     /**
      * Creates an even-odd Sudoku board
@@ -19,11 +19,23 @@ public class Board {
      * @param game an initial configuration
      */
     Board(@NotNull GameInstance game) {
-        groups = new Group[3][9]; // 0 for 세로. 1 for 가로. 2 for 덩어리
+        cells = new ArrayList<ArrayList<Cell>>();
+        groups = new ArrayList<ArrayList<Group>>();
+        // groups = new Group[3][9]; // 0 for 세로. 1 for 가로. 2 for 덩어리
+
+        for(int i = 0; i < 3; i++){
+            ArrayList<Group> arr = new ArrayList<Group>();
+            for (int j = 0; j < 9; j++){
+                Group temp = new Group();
+                arr.add(temp);
+            }
+            groups.add(arr);
+        }
+
 
         for(int i = 0; i < 9; i++){
             ArrayList<Cell> arr = new ArrayList<>();
-
+            
             for (int j = 0; j < 9; j++){
                 Type t = game.isEven(i, j) ? Type.EVEN : Type.ODD;
                 Cell c = new Cell(t);
@@ -35,11 +47,21 @@ public class Board {
 
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
-                groups[0][j].addCell(cells.get(i).get(j));
-                groups[1][i].addCell(cells.get(i).get(j));
-                groups[2][3*(i/3) + (j/3)].addCell(cells.get(i).get(j));
+                groups.get(0).get(j).addCell(cells.get(i).get(j));
+                groups.get(1).get(i).addCell(cells.get(i).get(j));
+                groups.get(2).get(3*(i/3) + (j/3)).addCell(cells.get(i).get(j));
             }
         }
+
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if (game.getNumbers(i, j).isPresent()){
+                    cells.get(i).get(j).setNumber(game.getNumbers(i, j).get());
+                }
+
+            }
+        }
+
 
     }
 
@@ -63,7 +85,7 @@ public class Board {
      */
     @NotNull
     Group getRowGroup(int i) {
-        return groups[1][i];
+        return groups.get(1).get(i);
     }
 
     /**
@@ -74,7 +96,7 @@ public class Board {
      */
     @NotNull
     Group getColGroup(int j) {
-        return groups[0][j];
+        return groups.get(0).get(j);
     }
 
     /**
@@ -86,6 +108,6 @@ public class Board {
      */
     @NotNull
     Group getSquareGroup(int n, int m) {
-        return groups[2][(3*n)+m];
+        return groups.get(2).get(3*n + m);
     }
 }

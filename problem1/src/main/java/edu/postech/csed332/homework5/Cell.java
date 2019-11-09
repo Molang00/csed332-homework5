@@ -31,6 +31,17 @@ public class Cell extends Subject {
         this.type = type;
         this.possibility = new HashSet<Integer>();
         this.groups = new LinkedList<Group>();
+
+        if (type == Type.ODD){
+            for(int i = 1; i <= 9; i += 2){
+                possibility.add(i);
+            }
+        }
+        else{
+            for(int i = 2; i <= 8; i += 2){
+                possibility.add(i);
+            }
+        }
     }
 
     /**
@@ -63,20 +74,26 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void setNumber(int number) {
-        this.number = number;
+        if (possibility.contains(number)){
+            System.out.println("POSSIBLE\n");
+            this.number = number;
 
-       Event e = new SetNumberEvent(number);
-       notifyObservers(e);
-
+            Event e = new SetNumberEvent(number);
+            notifyObservers(e);
+            System.out.println(possibility);
+        }
     }
 
     /**
      * Removes the number of this cell and notifies an UnsetNumberEvent, provided that the cell has a number.
      */
     public void unsetNumber() {
-        Event e = new UnsetNumberEvent(this.number);
-        this.number = null;
-        notifyObservers(e);
+        if (this.number != null){
+            System.out.println("UNSET NUMBER");
+            Event e = new UnsetNumberEvent(this.number);
+            this.number = null;
+            notifyObservers(e);
+        }
     }
 
     /**
@@ -135,6 +152,7 @@ public class Cell extends Subject {
                 Event e = new EnabledEvent();
                 notifyObservers(e);
             }
+            System.out.println("I ADDED POSSIBILITY");
             this.possibility.add(number);
         }
     }
@@ -149,6 +167,7 @@ public class Cell extends Subject {
         boolean possible = this.possibility.contains(number);
 
         if (possible){
+            System.out.println("I'm going to remove Possibility");
             this.possibility.remove(number);
             if(this.possibility.isEmpty()){
                 Event e = new DisabledEvent();
